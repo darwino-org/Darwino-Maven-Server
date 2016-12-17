@@ -1,0 +1,6 @@
+{
+	"mainPage": "home",
+	"navigator": "mainnav",
+	"title": "mvnserver",
+  	"type": "app-application"
+}
