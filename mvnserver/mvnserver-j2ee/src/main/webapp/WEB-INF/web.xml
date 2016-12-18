@@ -81,9 +81,29 @@
 	<!--  Filter for custom authentication -->
 	<!--  This should be the first one, before the J2EE filter as the user is required for the session  -->
 	<!--  Note that the server level authentication should be disabled then  -->
+	
+	<!-- Use a basic-only filter for the repo, as Maven doesn't work with our session auth -->
+	<filter>
+    	<filter-name>RepoAuth</filter-name>
+   		<filter-class>com.darwino.j2ee.servlet.authentication.AuthenticationFilter</filter-class>
+   		<init-param>
+   			<param-name>modes</param-name>
+   			<param-value>basic</param-value>
+   		</init-param>
+    </filter>
+	<filter-mapping>
+    	<filter-name>RepoAuth</filter-name>
+    	<url-pattern>/.darwino-app/repo/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+    	<dispatcher>FORWARD</dispatcher>
+   	</filter-mapping>
 	<filter>
     	<filter-name>DarwinoAuthentication</filter-name>
    		<filter-class>com.darwino.j2ee.servlet.authentication.AuthenticationFilter</filter-class>
+   		<init-param>
+   			<param-name>modes</param-name>
+   			<param-value>form,basic</param-value>
+   		</init-param>
     </filter>
 	<filter-mapping>
     	<filter-name>DarwinoAuthentication</filter-name>
@@ -130,24 +150,23 @@
 	<!--  Security Filter -->
 	<!--  This filter allows or diallows requests based on an HttpServiceConstraints bean (uses the names or default app names) -->
 	<!--  anonymous requests can be blocked -->
-<!-- 	
-	<filter>
-    	<filter-name>SecurityFilter</filter-name>
-    	<filter-class>com.darwino.j2ee.servlet.security.SecurityFilter</filter-class>
-	</filter>
-	<filter-mapping>
-    	<filter-name>SecurityFilter</filter-name>
-    	<url-pattern>/*</url-pattern>
-		<init-param>
-			<param-name>anonymous</param-name>
-			<param-value>false</param-value>
-		</init-param>
-		<init-param>
-			<param-name>httpConstraints</param-name>
-			<param-value>bean1,bean2</param-value>
-		</init-param>
-	</filter-mapping>
--->
+
+<!-- 	<filter> -->
+<!--     	<filter-name>SecurityFilter</filter-name> -->
+<!--     	<filter-class>com.darwino.j2ee.servlet.security.SecurityFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>anonymous</param-name> -->
+<!-- 			<param-value>true</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>httpConstraints</param-name> -->
+<!-- 			<param-value>bean1,bean2</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!--     	<filter-name>SecurityFilter</filter-name> -->
+<!--     	<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
 
 	<!--  Filter for publishing the Darwino Services -->
 	<filter>
